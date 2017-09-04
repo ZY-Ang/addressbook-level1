@@ -86,7 +86,7 @@ public class AddressBook {
     private static final String MESSAGE_APPLICATION_ERROR = "Application Error: %1$s command was unable to be resolved.";
     private static final String MESSAGE_INVALID_COMMAND_FORMAT = "Invalid command format: %1$s " + LS + "%2$s";
     private static final String MESSAGE_CONFIRM_DANGEROUS_OPERATION = "Confirm %1$s %2$s? (%3$s/%4$s): ";
-    private static final String MESSAGE_DANGEROUS_OPERATION_CANCELLED = "%1$s operation has been cancelled.";
+    private static final String MESSAGE_OPERATION_CANCELLED = "%1$s operation has been cancelled.";
     private static final String MESSAGE_INVALID_CONFIRMATION_COMMAND = "Invalid confirmation command. Enter only '%1$s' or '%2$s'.";
     private static final String MESSAGE_EMPTY_HISTORY_STACK = "Unable to %1$s: You are already at the most recent %1$s state.";
     private static final String MESSAGE_INVALID_FILE = "The given file name [%1$s] is not a valid file name!";
