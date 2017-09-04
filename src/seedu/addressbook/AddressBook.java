@@ -111,6 +111,10 @@ public class AddressBook {
     private static final String PERSON_DATA_PREFIX_EMAIL = "e/";
     private static final String COMMAND_SORT_PARAMETER_DESCENDING = "DESC";
     private static final String COMMAND_SORT_PARAMETER_ASCENDING = "ASC";
+    private static final HashSet<String> POSSIBLE_PREFIXES =
+            new HashSet<>(Arrays.asList(PERSON_DATA_PREFIX_NAME,
+                                        PERSON_DATA_PREFIX_PHONE,
+                                        PERSON_DATA_PREFIX_EMAIL));
     private static final HashSet<String> POSSIBLE_SORT_ARGUMENTS =
             new HashSet<>(Arrays.asList(PERSON_DATA_PREFIX_NAME,
                                         PERSON_DATA_PREFIX_PHONE,
@@ -763,37 +767,6 @@ public class AddressBook {
         return removeFirstPrefixSign(
                 encoded.substring(indexOfEmailPrefix, getNextEditArgIndex(encoded, indexOfEmailPrefix)).trim(),
                 PERSON_DATA_PREFIX_EMAIL);
-    }
-
-    /**
-     * Low level utility method to assist computation of substring positions of arguments.
-     *
-     * @param encoded encoded command args string for the edit person command
-     * @param indexOfArg index of argument position within the encoding.
-     * @return the index of the next argument within the encoded string,
-     *          the end of the string if it's the last argument or,
-     *          -1 if no index exists for the specified argument within the encoded string.
-     */
-    private static int getNextEditArgIndex(String encoded, int indexOfArg) {
-        final int indexOfNamePrefix = encoded.indexOf(PERSON_DATA_PREFIX_NAME);
-        final int indexOfPhonePrefix = encoded.indexOf(PERSON_DATA_PREFIX_PHONE);
-        final int indexOfEmailPrefix = encoded.indexOf(PERSON_DATA_PREFIX_EMAIL);
-        int[] indexArray = new int[] { indexOfNamePrefix, indexOfPhonePrefix, indexOfEmailPrefix };
-        Arrays.sort(indexArray);
-        int foundIndex = Arrays.binarySearch(indexArray, indexOfArg);
-
-        //argument index is not found within the search array.
-        if (foundIndex == -1) {
-            return foundIndex;
-
-            // found index is last argument, target is from own prefix to end of string
-        } else if (foundIndex == indexArray.length - 1) {
-            return encoded.length();
-
-            // found index is somewhere in the middle, target is from own prefix to next prefix
-        } else {
-            return indexArray[foundIndex + 1];
-        }
     }
 
     /**
@@ -1813,6 +1786,39 @@ public class AddressBook {
      */
 
     /**
+     * Extracts all the possible prefixes in the userCommand string.
+     * 
+     * @see #POSSIBLE_PREFIXES
+     * @param userCommand
+     * @return
+     */
+    private static String[] extractCommandArgPrefixes(String userCommand) {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * Extracts the command argument under the prefix-less portion of an argument string.
+     * For example, in the command "add abc p/1234 e/a@a.com", "abc" is the name and is hence the prefix-less argument
+     * 
+     * @param userCommand
+     * @return
+     */
+    private static String extractCommandArgPrefixless(String userCommand) {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * Extracts the command arguments under a specified prefix of an argument string.
+     * 
+     * @param prefix
+     * @param userCommand
+     * @return
+     */
+    private static String[] extractCommandArgs(String prefix, String userCommand) {
+        throw new NotImplementedException();
+    }
+    
+    /**
      * Removes sign(p/, d/, etc) from parameter string if it is the first substring of the full string
      *
      * @param fullString  Parameter as a string
@@ -1825,6 +1831,37 @@ public class AddressBook {
             return fullString.substring(prefixSign.length());
         else {
             return fullString;
+        }
+    }
+
+    /**
+     * Low level utility method to assist computation of substring positions of arguments.
+     *
+     * @param encoded encoded command args string for the edit person command
+     * @param indexOfArg index of argument position within the encoding.
+     * @return the index of the next argument within the encoded string,
+     *          the end of the string if it's the last argument or,
+     *          -1 if no index exists for the specified argument within the encoded string.
+     */
+    private static int getNextEditArgIndex(String encoded, int indexOfArg) {
+        final int indexOfNamePrefix = encoded.indexOf(PERSON_DATA_PREFIX_NAME);
+        final int indexOfPhonePrefix = encoded.indexOf(PERSON_DATA_PREFIX_PHONE);
+        final int indexOfEmailPrefix = encoded.indexOf(PERSON_DATA_PREFIX_EMAIL);
+        int[] indexArray = new int[] { indexOfNamePrefix, indexOfPhonePrefix, indexOfEmailPrefix };
+        Arrays.sort(indexArray);
+        int foundIndex = Arrays.binarySearch(indexArray, indexOfArg);
+
+        //argument index is not found within the search array.
+        if (foundIndex == -1) {
+            return foundIndex;
+
+            // found index is last argument, target is from own prefix to end of string
+        } else if (foundIndex == indexArray.length - 1) {
+            return encoded.length();
+
+            // found index is somewhere in the middle, target is from own prefix to next prefix
+        } else {
+            return indexArray[foundIndex + 1];
         }
     }
 
